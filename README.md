@@ -17,6 +17,8 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-canvasExpand');
 ```
 
+windows用户务必安装ImageMagick.exe文件，因为npm安装的imageMagick只是个调用exe程序的包装器，例如本人安装的是ImageMagick-6.9.3-6-Q16-x64-dll. [官网有下载](http://www.imagemagick.org/script/binary-releases.php)。
+
 ## The "canvasExpand" task
 
 ### Overview
@@ -37,17 +39,17 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+#### options.size
+Type: `Array`
+Default value: `[20, 20]`
 
-A string value that is used to do something with whatever.
+希望扩展的图片尺寸大小，大于这个尺寸的图片会被忽略
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+#### options.filenameMap
+Type: `Function`
+Default value: `function(filename) { return filename; }`
 
-A string value that is used to do something else with whatever else.
+扩展后的新图片的名称，<code>filename</code>参数是原始文件名称。
 
 ### Usage Examples
 
@@ -57,11 +59,14 @@ In this example, the default options are used to do something with whatever. So 
 ```js
 grunt.initConfig({
   canvasExpand: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    default_options: {
+      options: {
+      },
+      files: {
+        'tmp/icons/': 'test/fixtures/icons/*.png'
+      }
+    }
+  }
 });
 ```
 
@@ -72,11 +77,11 @@ In this example, custom options are used to do something else with whatever else
 grunt.initConfig({
   canvasExpand: {
     options: {
-      separator: ': ',
+      size: [40,40],
       punctuation: ' !!!',
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+    filenameMap: function(name) {
+      return '40x40-' + name;
     },
   },
 });
